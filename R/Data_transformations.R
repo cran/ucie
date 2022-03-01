@@ -11,6 +11,7 @@ NULL
 
 # RGL_USE_NULL=TRUE
 
+
 RGB_space <- data.frame("R"= c(seq(0, 255, by=32),255, # K -> R
                                seq(0, 255, by=32),255, # G -> Y
                                rep(255, 9), # Y -> W
@@ -295,9 +296,10 @@ data2cielab <- function(dataset, WL = 1, Wa = 1, Wb = 1, S = 1, LAB_coordinates 
     stop("The dataset has missing values. Check again!")
   }
 
-  dataset <- Scaling(dataset, FitColorsFunction(dataset, WL, Wa, Wb)[1]*S)
-  dataset <- Rotation(as.matrix(dataset), FitColorsFunction(dataset, WL, Wa, Wb)[2], FitColorsFunction(dataset, WL, Wa, Wb)[3], FitColorsFunction(dataset, WL, Wa, Wb)[4])
-  dataset <- Translation(as.matrix(dataset), FitColorsFunction(dataset, WL, Wa, Wb)[5], FitColorsFunction(dataset, WL, Wa, Wb)[6], FitColorsFunction(dataset, WL, Wa, Wb)[7])
+  FitColorsFunction_parameters = FitColorsFunction(dataset, WL, Wa, Wb)
+  dataset <- Scaling(dataset, FitColorsFunction_parameters[1]*S)
+  dataset <- Rotation(as.matrix(dataset), FitColorsFunction_parameters[2], FitColorsFunction_parameters[3], FitColorsFunction_parameters[4])
+  dataset <- Translation(as.matrix(dataset), FitColorsFunction_parameters[5], FitColorsFunction_parameters[6], FitColorsFunction_parameters[7])
 
   Lab <- dataset
   Lab <- round(Lab, 2)
